@@ -1,7 +1,7 @@
 const mongoose = require('mongoose'); // Erase if already required
 
 // Declare the Schema of the Mongo model
-var userSchema = new mongoose.Schema({
+var courseSchema = new mongoose.Schema({
     title:{
         type:String,
         required:true,
@@ -13,9 +13,10 @@ var userSchema = new mongoose.Schema({
         unique:true,
     },
    slug:{
-        type:String,
-        required:true,
-        unique:true,
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
     },
    NumberofLesson:{
         type:Number,
@@ -39,4 +40,4 @@ var userSchema = new mongoose.Schema({
 ); 
 
 //Export the model
-module.exports = mongoose.model('User', userSchema);
+module.exports = mongoose.model('Course', courseSchema);

@@ -5,8 +5,11 @@ const MethodOverride = require('method-override');
 const cors = require('cors');
 const dbConnect = require('./app/configs/dbConnect');
 const cookieParser = require('cookie-parser');
-dbConnect();
+const morgan = require('morgan');
+
 const App = Express();
+dbConnect();
+App.use(morgan("dev"));
 
 App.use(BodyParser.json({}));
 App.use(cookieParser())

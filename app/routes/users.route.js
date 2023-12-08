@@ -2,6 +2,7 @@ const userService = require('../services/users.service');
 const authMiddleware = require('../middleware/authmiddleware')
 module.exports = function (app) {
     app.get('/user/refresh',userService.handleRefreshToken);
+    app.put('/user/password',authMiddleware,userService.updatePassword);
     app.post('/user/login',userService.login);
     app.post('/user/register',userService.register);
     app.get('/user/logout',userService.logout);

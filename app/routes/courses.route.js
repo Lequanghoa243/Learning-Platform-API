@@ -30,11 +30,12 @@ module.exports = function (app) {
      *       "message": "invalid course"
      *     }
      */
-    app.get('/course', courseService.getAll);
+    app.post('/course/create', courseService.createCourse);
+    app.get('/course', courseService.getAllCourse);
     app.get('/course/search',courseService.searchCourse);
-    app.post('/course/:courseName/enrollCourse',courseService.enrollCourse)
-    app.get('/course/:courseName', courseService.getOne);
-    app.get('/course/:courseName/:id', courseService.getOneLesson);
+    app.get('/course/:id', courseService.getOneCourse);
+    app.post('/course/:courseName/enrollCourse',courseService.enrollCourse);
+
     
     
     
