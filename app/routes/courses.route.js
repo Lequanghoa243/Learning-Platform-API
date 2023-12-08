@@ -1,5 +1,6 @@
 
 const courseService = require('../services/courses.service');
+const authMinddleware = require('../middleware/authmiddleware');
 
 module.exports = function (app) {
      /**
@@ -31,11 +32,11 @@ module.exports = function (app) {
      *     }
      */
     app.post('/course/create', courseService.createCourse);
+    app.put('/course/rating',authMinddleware,courseService.rating);
     app.get('/course', courseService.getAllCourse);
-    app.get('/course/search',courseService.searchCourse);
+    app.post('/course/enrollcourse',authMinddleware,courseService.enrollCourse);
     app.get('/course/:id', courseService.getOneCourse);
-    app.post('/course/:courseName/enrollCourse',courseService.enrollCourse);
-
+ 
     
     
     

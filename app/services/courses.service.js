@@ -29,24 +29,99 @@ module.exports = {
     getOneCourse: asyncHander(async function (req, res) {
         const {id} = req.params;
         try{
-            const findProduct = await Course.findById(id);
-            res.json(findProduct);
+            const findCourse = await Course.findById(id);
+            res.json(findCourse);
         } catch(error){
             throw new Error(error);
         }
     }),
+
+    rating: asyncHander(async function (req, res) {
+      const {_id} = req.user;
+      const { star, courseId, comment } = req.body;
+     try {
+      const course = await Course.findById(courseId);
+      let alreadyRated = course.ratings.find((userId)=> userId.postedby.toString() === _id.toString());
+      if (alreadyRated){
+        const updateRating = await Course.updateOne({
+          ratings: {$elemMatch: alreadyRated}
+        },{
+          $set: { "ratings.$.star": star, "ratings.$.comment": comment },
+        },{
+          new: true,
+        });
+        res.json(updateRating);
+      }
+      else{
+        const rateCourse = await Course.findByIdAndUpdate(courseId,{
+          $push:{
+            ratings: {
+              star: star,
+              comment: comment,
+              postedby: _id,
+            },
+          },
+        },
+        {
+          new: true,
+        });
+        res.json(rateCourse);
+      }
+      
+      const getallratings = await Course.findById(courseId);
+      let totalRating = getallratings.ratings.length;
+      let ratingsum = getallratings.ratings
+      .map((item) => item.star)
+      .reduce((prev, curr) => prev + curr, 0);
+      let actualRating = Math.round(ratingsum / totalRating);
+
+      let finalproduct = await Course.findByIdAndUpdate(
+       courseId,
+        {
+          totalrating: actualRating,
+        },
+        { new: true }
+      );
+      res.json(finalproduct);
+
+     } catch (error) {
+      throw new Error(error);
+     }
+      
+  }),
     
-    
-    searchCourse: function(req, res) {
+
+    enrollCourse: asyncHander(async (req, res) => {
+      const { _id } = req.user;
+  const { courseId } = req.body;
+  try {
+    const user = await User.findById(_id);
+    const alreadyadded = user.courselist.find((id) => id.toString() === courseId);
+    if (alreadyadded) {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $pull: { courselist: courseId },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
+    } else {
+      let user = await User.findByIdAndUpdate(
+        _id,
+        {
+          $push: { courselist: courseId },
+        },
+        {
+          new: true,
+        }
+      );
+      res.json(user);
     }
-    ,
-    
-
-    getOneLesson: async function(req, res) {
-       
-    },
-
-    enrollCourse:asyncHander(async function (req, res) {
-   
+  } catch (error) {
+    throw new Error(error);
+  }
     }),
 };
