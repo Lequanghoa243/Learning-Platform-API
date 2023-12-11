@@ -1,5 +1,5 @@
 const userService = require('../services/users.service');
-const authMiddleware = require('../middleware/authmiddleware')
+const {authMiddleware} = require('../middleware/authmiddleware')
 module.exports = function (app) {
     app.get('/user/course-list',authMiddleware,userService.getCourseList);
     app.post('/user/forgot-password-token',userService.forgotPasswordToken);

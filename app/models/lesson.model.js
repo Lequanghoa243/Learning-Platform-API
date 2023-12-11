@@ -4,26 +4,25 @@ const lessonSchema = new mongoose.Schema(
     {
         title: {
             type: String,
+            unique: true,
             required: true,
             trim: true,
         },
         description: {
             type: String,
+            unique: true,
             required: true,
         },
         videoURL: {
             type: String,
-            required: true,
-        },
-        duration: {
-            type: Number,
+            unique: true,
             required: true,
         },
         sequence: {
             type: Number,
             required: true,
+            unique: true,
         },
-
         course: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Course',  

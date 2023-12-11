@@ -18,6 +18,7 @@ var courseSchema = new mongoose.Schema(
           type: String,
           required: true,
         },
+        learningTime: {type: String},
         category: {
           type: mongoose.Schema.Types.ObjectId,  
           ref: 'Category',  
