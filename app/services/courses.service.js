@@ -17,12 +17,20 @@ module.exports = {
       }),
 
     getAllCourse: asyncHander(async function (req, res) {
-        try {
-            const getAllCourse = await Course.find(req.query);
-            res.json(getAllCourse);
-          } catch (error) {
-            throw new Error(error);
-          }
+      try {
+        let query = {};
+
+        if (req.query.search) {
+            const searchRegex = new RegExp(req.query.search, 'i');
+            query.title = searchRegex;
+        }
+
+        const getAllCourse = await Course.find(query);
+        res.json(getAllCourse);
+    } catch (error) {
+        throw new Error(error);
+    }
+
     }),
     
    
@@ -92,8 +100,8 @@ module.exports = {
     
 
     enrollCourse: asyncHander(async (req, res) => {
-      const { _id } = req.user;
-  const { courseId } = req.body;
+    const { _id } = req.user;
+    const { courseId } = req.body;
   try {
     const user = await User.findById(_id);
     const alreadyadded = user.courselist.find((id) => id.toString() === courseId);

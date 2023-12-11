@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'); 
 const bcrypt = require('bcrypt');
+const crypto = require('crypto');
 
 var userSchema = new mongoose.Schema({
     firstname:{
@@ -24,6 +25,12 @@ var userSchema = new mongoose.Schema({
         required:true,
     },
     courselist: [{type: mongoose.Schema.Types.ObjectId, ref:"Course" }],
+    completedLessons: [
+      {
+          course: { type: mongoose.Schema.Types.ObjectId, ref: 'Course' },
+          lesson: { type: mongoose.Schema.Types.ObjectId, ref: 'Lesson' },
+      }
+  ],
     refreshToken: {type: String,},
     passwordChangedAt: Date,
     passwordResetToken: String,

@@ -19,16 +19,19 @@ var courseSchema = new mongoose.Schema(
           required: true,
         },
         category: {
-          type: String,
+          type: mongoose.Schema.Types.ObjectId,  
+          ref: 'Category',  
           required: true,
         },
-        images: [
+        images:
           {
-            public_id: String,
             url: String,
           },
-        ],
-        tags: String,
+          lessonlist: [{type: mongoose.Schema.Types.ObjectId, ref:"Lesson" }],
+        NumberofLesson: {
+          type: Number,
+          default: 0,
+        },
         ratings: [
           {
             star: Number,

@@ -37,8 +37,4 @@ module.exports = function (app) {
     app.post('/course/enrollcourse',authMinddleware,courseService.enrollCourse);
     app.get('/course/:id', courseService.getOneCourse);
  
-    
-    
-    
-
 };
