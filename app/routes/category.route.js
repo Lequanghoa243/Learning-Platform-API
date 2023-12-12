@@ -12,11 +12,14 @@ module.exports = function (app) {
      *
      * @apiDescription Create one category for course
      *
-     * @apiBody {String} title title of the category
+     * @apiBody {String} Title Title of the category
      *
      * @apiExample Example usage:
      *      curl -i http://localhost:3000/category/create
-     * @apiSuccess {String} title the created category
+     * @apiSuccess {String} title title of the created category
+     * @apiSuccess {String} id id of the created category
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      * 
      *
      * @apiSuccessExample Success-Response:
@@ -28,7 +31,7 @@ module.exports = function (app) {
      *           "__v": 0
      *     }
      *
-     * @apiError ErrorCreatingCategory
+     * @apiError ErrorCreatingCategory Error occur when creating Category
      *
      * @apiErrorExample Error-Response:
      * {
@@ -63,7 +66,10 @@ module.exports = function (app) {
      * curl -i http://localhost:3000/category
      *
      * @apiSuccess {Json} Json Object all the category
-
+     * @apiSuccess {String} id Id Object all the category
+     * @apiSuccess {String} title Title Object all the category
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      *
      * @apiSuccessExample Success-Response:
      *    [
@@ -83,7 +89,7 @@ module.exports = function (app) {
      *           }
      *    ]
      *
-     * @apiError ErrorGettingAllCategory
+     * @apiError ErrorGettingAllCategory Error when get all category
      *
      * @apiErrorExample Error-Response:
      *     {
@@ -108,9 +114,10 @@ module.exports = function (app) {
      * @apiExample Example usage:
      * curl -i http://localhost:3000/category/65770ab89f0dbfabc63efc2b
      *
-     * @apiSuccess {String} Title title of category
-     * @apiSuccess {String} ID id of the category
-     *
+     * @apiSuccess {String} Title Title of category
+     * @apiSuccess {String} ID Id of the category
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      * @apiSuccessExample Success-Response:
      *     {
      *           "title": "Data analysis",

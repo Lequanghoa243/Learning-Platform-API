@@ -1,0 +1,7 @@
+{
+    "name" : "API DOCS of Project",
+    "description": "Backend RESTful API for E-Learning Platform",
+    "version": "0.0.0",
+    "url": "http://localhost:3000",
+    "sampleUrl": "http://localhost:3000"
+  }

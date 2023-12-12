@@ -27,7 +27,10 @@ module.exports = function (app) {
      * @apiSuccess {String} videoURL
      * @apiSuccess {String} sequence
      * @apiSuccess {String} course
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     * 
+     * 
      * @apiSuccessExample Success-Response:
      * {
      *      "title": "Introduction to the Java Course",
@@ -83,7 +86,8 @@ module.exports = function (app) {
      * @apiSuccess {String} videoURL
      * @apiSuccess {String} sequence
      * @apiSuccess {String} course
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      *
      * @apiSuccessExample Success-Response:
      * {
@@ -149,7 +153,8 @@ module.exports = function (app) {
      * @apiSuccess {String} videoURL
      * @apiSuccess {String} sequence
      * @apiSuccess {String} course
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      *
      *
      * @apiSuccessExample Success-Response:

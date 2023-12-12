@@ -10,18 +10,15 @@ const lessonSchema = new mongoose.Schema(
         },
         description: {
             type: String,
-            unique: true,
             required: true,
         },
         videoURL: {
             type: String,
-            unique: true,
             required: true,
         },
         sequence: {
             type: Number,
             required: true,
-            unique: true,
         },
         course: {
             type: mongoose.Schema.Types.ObjectId,

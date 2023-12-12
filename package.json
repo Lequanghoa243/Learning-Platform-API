@@ -2,7 +2,6 @@
   "name": "back-end-elearning-platform",
   "version": "0.0.0",
   "description": "Back end for web project about elearning platform",
-  
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
@@ -10,12 +9,7 @@
     "start": "node index.js",
     "gen_api_doc": "apidoc -i app/routes/ -o ./public/docs/"
   },
-  "api-doc":{
-    "header": {
-      "title": "API doc for E-learning Platform Project"
-    }
-
-  },
+  
   "author": "Quang Hoa",
   "license": "ISC",
   "dependencies": {

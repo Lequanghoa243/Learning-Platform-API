@@ -46,8 +46,8 @@ module.exports = function (app) {
      * }
 
      *
-     * @apiError ErrorCreatingcourse
-     *
+     * @apiError ErrorCreatingcourse Error occur when creating course
+     *  @apiErrorExample Error-Response:
      * {
      *     "result": "fail",
      *     "code": "500",
@@ -86,7 +86,7 @@ module.exports = function (app) {
      * @apiSuccess {String} slug slug of the course
      * @apiSuccess {String} description description of the course
      * @apiSuccess {String} LearningTime LearningTime of the course
-     * @apiSuccess {Json} Rating the ratings of course
+     * @apiSuccess {Array} Rating the ratings of course
      * 
      *
      * @apiSuccessExample Success-Response:
@@ -121,8 +121,8 @@ module.exports = function (app) {
     *     "__v": 0
     * }
     * 
-     * @apiError ErrorRating
-     * 
+     *@apiError ErrorRating Error occur when rating
+     *  
      *@apiErrorExample Error-Response:
      * {
     *     "result": "fail",
@@ -156,8 +156,47 @@ module.exports = function (app) {
      * curl -i http://localhost:3000/course
      *
      * @apiSuccess {Json} Courses The array object json
-     *
+     * @apiSuccess {String} Title title of the course
+     * @apiSuccess {String} slug slug of the course
+     * @apiSuccess {String} description description of the course
+     * @apiSuccess {String} LearningTime LearningTime of the course
+     * @apiSuccess {Json} Rating the ratings of course
+     * 
+     * 
      * @apiSuccessExample Success-Response:
+    * {
+    *     "_id": "65772464288fef940490a95b",
+    *     "title": "Javasript from Zero",
+    *     "slug": "javasript-from-zero",
+    *     "description": "A beginner-friendly course that takes you from ground zero to confidently mastering the essentials of JavaScript programming.",
+    *     "course": "6577243c288fef940490a958",
+    *     "courselist": [
+    *         "6577250f3201738008e39659",
+    *         "657725fbb9465c59933d2dfa",
+    *         "6577323f184ffadb9fe4cb61",
+    *         "65773243184ffadb9fe4cb66",
+    *         "657732505dd5c3024a56faaa",
+    *         "6577325e2615694f54dff5f1",
+    *         "657732d37746f00eaf5979fc",
+    *         "6577332b489541c6c5a9fbbb"
+    *     ],
+    *     "Numberofcourse": 8,
+    *     "totalrating": "0",
+    *     "ratings": [
+    *         {
+    *             "star": 4,
+    *             "comment": "so good",
+    *             "postedby": "65768a66711726ed1a9ffbf8",
+    *             "_id": "65773705d60213baa44307a3"
+    *         }
+    *     ],
+    *     "createdAt": "2023-12-11T15:01:56.481Z",
+    *     "updatedAt": "2023-12-11T16:21:25.959Z",
+    *     "__v": 0
+    * }
+     * @apiError ErrorGettingAllcourse Error occur when getting all Course
+     *
+     * @apiErrorExample Error-Response:
     * {
     *     "result": "fail",
     *     "code": "500",
@@ -174,15 +213,6 @@ module.exports = function (app) {
     *     },
     *     "all": "Internal Server Error"
     * }
-     * @apiError ErrorGettingAllcourse
-     *
-     * @apiErrorExample Error-Response:
-     *     {
-     *       "result": "fail",
-     *       "code": "500",
-     *       "error": "Error fetching all courses",
-     *       "all": "Internal Server Error"
-     *     }
      */
     app.post('/course/enrollcourse',authMiddleware,courseService.enrollCourse);
     /**
@@ -195,7 +225,7 @@ module.exports = function (app) {
      *
      * @apiDescription Enroll for a course
      *
-     * @apiBody {String} courseId
+     * @apiBody {String} courseId id of course
      * 
      * @apiExample Example usage:
      *      curl -i http://localhost:3000/course/enrollcourse
@@ -206,6 +236,7 @@ module.exports = function (app) {
      * @apiSuccess {String} lastname name of the user
      * @apiSuccess {String} email email of the user
      * @apiSuccess {String} mobile mobile of the user
+     * @apiSuccess {Array} Courselist list of courses of user
      *
      * @apiSuccessExample Success-Response:
     * {
@@ -227,7 +258,7 @@ module.exports = function (app) {
     * }
     *
     *
-    * @apiError ErrorCreatingcourse
+    * @apiError ErrorCreatingcourse Error occur when creating course
     * 
     * @apiErrorExample Error-Response:
     * {

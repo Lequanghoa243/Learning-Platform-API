@@ -78,9 +78,10 @@ module.exports = {
   }),
 
   logout: asyncHandler(async function (req, res) {
+    const cookie = req.cookies;
+      if (!cookie?.refreshToken) res.json({"msg":"No Refresh Token in Cookies"});
     try {
-      const cookie = req.cookies;
-      if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
+      
       const refreshToken = cookie.refreshToken;
       const user = await User.findOne({ refreshToken });
       if (!user) {
@@ -88,7 +89,7 @@ module.exports = {
           httpOnly: true,
           secure: true,
         });
-        return res.sendStatus(204); // forbidden
+        return res.sendStatus(204); 
       }
       await User.findOneAndUpdate({ refreshToken }, {
         refreshToken: "",
@@ -97,7 +98,7 @@ module.exports = {
         httpOnly: true,
         secure: true,
       });
-      res.sendStatus(204); // forbidden
+      res.sendStatus(204); 
     } catch (error) {
       sendError(res, '500', 'Error logging out', 500, 'Internal Server Error', error);
     }
@@ -189,12 +190,13 @@ module.exports = {
     const { password } = req.body;
     const { token } = req.params;
     const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
-    try {
+  
       const user = await User.findOne({
         passwordResetToken: hashedToken,
         passwordResetExpires: { $gt: Date.now() },
       });
-      if (!user) throw new Error(" Token Expired, Please try again later");
+      if (!user) res.json({"msg":" Token Expired, Please try again later"});
+      try {
       user.password = password;
       user.passwordResetToken = undefined;
       user.passwordResetExpires = undefined;
