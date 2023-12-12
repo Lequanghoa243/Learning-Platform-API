@@ -18,6 +18,7 @@ const lessonSchema = new mongoose.Schema(
         },
         sequence: {
             type: Number,
+            unique: false,
             required: true,
         },
         course: {
