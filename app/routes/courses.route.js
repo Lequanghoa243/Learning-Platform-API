@@ -28,7 +28,9 @@ module.exports = function (app) {
      * @apiSuccess {String} slug slug of the course
      * @apiSuccess {String} description description of the course
      * @apiSuccess {String} LearningTime LearningTime of the course
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     * 
      * @apiSuccessExample Success-Response:
      * {
      *     "title": "Javasript from Zero1",
@@ -87,7 +89,8 @@ module.exports = function (app) {
      * @apiSuccess {String} description description of the course
      * @apiSuccess {String} LearningTime LearningTime of the course
      * @apiSuccess {Array} Rating the ratings of course
-     * 
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      *
      * @apiSuccessExample Success-Response:
      * {
@@ -161,7 +164,8 @@ module.exports = function (app) {
      * @apiSuccess {String} description description of the course
      * @apiSuccess {String} LearningTime LearningTime of the course
      * @apiSuccess {Json} Rating the ratings of course
-     * 
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      * 
      * @apiSuccessExample Success-Response:
     * {
@@ -237,7 +241,9 @@ module.exports = function (app) {
      * @apiSuccess {String} email email of the user
      * @apiSuccess {String} mobile mobile of the user
      * @apiSuccess {Array} Courselist list of courses of user
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     * 
      * @apiSuccessExample Success-Response:
     * {
     *     "_id": "65768a66711726ed1a9ffbf8",
@@ -292,13 +298,14 @@ module.exports = function (app) {
      * @apiParam {string} id ID of course, on params
      *
      * @apiExample Example usage:
-     * curl -i http://localhost:3000/course/65770ab89f0dbfabc63efc2b
+     * curl -i http://localhost:3000/course/65770ab89f0 dbfabc63efc2b
      *
      * @apiSuccess {String} Title title of the course
      * @apiSuccess {String} slug slug of the course
      * @apiSuccess {String} description description of the course
      * @apiSuccess {String} LearningTime LearningTime of the course
-     *
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
      *
      * @apiSuccessExample Success-Response:
      * {

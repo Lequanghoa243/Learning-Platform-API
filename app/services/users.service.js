@@ -24,6 +24,7 @@ module.exports = {
       }
     } catch (error) {
       sendError(res, '500', 'Error registering user', 500, 'Internal Server Error', error);
+      throw new Error(error);
     }
   }),
 
