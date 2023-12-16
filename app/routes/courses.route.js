@@ -442,7 +442,61 @@ module.exports = function (app) {
     *     "all": "Internal Server Error"
     * }
     */
+
     app.get('/course/:id/lesson', courseService.getAllLesson);
+/**
+ * @api {GET} /course/:id/lesson Get All Lessons for a Course
+ *
+ * @apiVersion 0.0.0
+ * @apiName Get All Lessons for a Course
+ * @apiGroup Course
+ * @apiPermission All type of Users
+ *
+ * @apiDescription Get a list of all lessons for a specific course
+ *
+ * @apiParam {String} id Course's unique ID
+ * 
+ * @apiExample Example usage:
+ *      curl -i http://localhost:3000/course/65772464288fef940490a95b/lesson
+ * 
+ * 
+ * @apiSuccess {Array} lessons List of lessons for the course
+ * @apiSuccess {String} _id Lesson's unique ID
+ * @apiSuccess {String} title Lesson's title
+ * @apiSuccess {String} description Lesson's description
+ * @apiSuccess {String} videoURL Lesson's video URL
+ * @apiSuccess {String} sequence Lesson's sequence number
+ * @apiSuccess {String} course Lesson's associated course ID
+ * @apiSuccess {Timestamp} createdAt Lesson's creation time
+ * @apiSuccess {Timestamp} updatedAt Lesson's last update time
+ *
+ * @apiSuccessExample Success-Response:
+ * [
+ *    {
+ *       "_id": "657725fbb9465c59933d2dfa",
+ *       "title": "Introduction to the Java Course",
+ *       "description": "This lesson covers the basics of the course.",
+ *       "videoURL": "https://example.com/in3tro-video.mp4",
+ *       "sequence": 2,
+ *       "course": "65772464288fef940490a95b",
+ *       "createdAt": "2023-12-11T15:08:43.371Z",
+ *       "updatedAt": "2023-12-11T15:08:43.371Z"
+ *    },
+ * ]
+ *
+ *
+ * @apiError ErrorGettingAllLessons
+ * @apiErrorExample Error-Response:
+ *     {
+ *       "result": "fail",
+ *       "code": "500",
+ *       "error": "Error retrieving lessons for the course",
+ *       "data": null,
+ *       "all": "Internal Server Error"
+ *     }
+ * 
+ */
+
     app.get('/course/:id', courseService.getOneCourse);
     /**
      * @api {GET} /course/:id Get One course
