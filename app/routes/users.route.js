@@ -1,6 +1,201 @@
 const userService = require('../services/users.service');
-const {authMiddleware} = require('../middleware/authmiddleware')
+const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 module.exports = function (app) {
+    app.post("/user/admin-login", userService.loginAdmin);
+    /**
+     * @api {POST} /user/admin-login Admin Log in
+     *
+     * @apiVersion 0.0.0
+     * @apiName Admin Log in
+     * @apiGroup User
+     * @apiPermission All type of Users
+     *
+     * @apiDescription Log in as an administrator
+     *
+     * @apiBody {String} Email Email of Admin
+     * @apiBody {String} password Password of Admin
+     * 
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/user/admin-login
+     * 
+     * 
+     * @apiSuccess {Json} admin Admin profile
+     * @apiSuccess {String} _id Admin's unique ID
+     * @apiSuccess {String} firstname Admin's first name
+     * @apiSuccess {String} lastname Admin's last name
+     * @apiSuccess {String} email Admin's email
+     * @apiSuccess {String} mobile Admin's mobile number
+     * @apiSuccess {String} role Admin's role (e.g., "admin")
+     * @apiSuccess {Timestamp} createdAt Admin's creation time
+     * @apiSuccess {Timestamp} updatedAt Admin's last update time
+     * @apiSuccess {String} refreshToken Admin's refresh token (if available)
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+     *    "_id": "65768a66711726ed1a9ffbf8",
+     *    "firstname": "Admin",
+     *    "lastname": "User",
+     *    "email": "admin@example.com",
+     *    "mobile": "1234",
+     *    "role": "admin",
+     *    "createdAt": "2023-12-11T04:04:54.215Z",
+     *    "updatedAt": "2023-12-12T07:28:54.271Z",
+     *    "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     * }
+     *
+     *
+     * @apiError ErrorUnauthorized Wrong admin email or password
+     * @apiError Error-server Error when creating refresh token
+     * @apiErrorExample Error-Response:
+     *    {
+     *       "msg": "Wrong admin email or password"    
+     * }
+     * @apiErrorExample Error-Response:
+     *     {
+     *       "result": "fail",
+     *       "code": "500",
+     *       "error": "Error logging in",
+     *       "data": {
+     *          "stringValue": "\"6571e4758e1ac9a00c5036f31\"",
+     *          "valueType": "string",
+     *          "kind": "ObjectId",
+     *          "value": "6571e4758e1ac9a00c5036f31",
+     *          "path": "_id",
+     *          "reason": {},
+     *          "name": "CastError",
+     *          "message": "Cast to ObjectId failed for value \"6571e4758e1ac9a00c5036f31\" (type string) at path \"_id\" for model \"admin\""
+     *       },
+     *       "all": "Internal Server Error"
+     *     }
+     * 
+     */
+    
+    app.get("/user/:id", authMiddleware, isAdmin, userService.getaUser);
+    /**
+     * @api {GET} /user/:id Get A User
+     *
+     * @apiVersion 0.0.0
+     * @apiName Get a User
+     * @apiGroup User
+     * @apiPermission Admin
+     *
+     * @apiDescription View Profile of User
+     *
+     * 
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/user/profile
+     * 
+     * 
+    * @apiSuccess {Json} user user and the course list
+     * @apiSuccess {String} fname name of the user
+     * @apiSuccess {String} lastname name of the user
+     * @apiSuccess {String} email email of the user
+     * @apiSuccess {String} mobile mobile of the user
+     * @apiSuccess {Array} Courselist list of courses of user
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     *
+    * @apiSuccessExample Success-Response:
+    * {
+    *     "_id": "65768a66711726ed1a9ffbf8",
+    *     "firstname": "hoa",
+    *     "lastname": "quang",
+    *     "email": "kiritoyukile23@gmail.com",
+    *     "mobile": "1243",
+    *     "role": "user",
+    *     "password": "$2b$10$pOTt1KCRcwSifkhsEJPRcOUmjxa3m7fQhlsmW58VmLN8V.LxZukEq",
+    *     "courselist": [],
+    *     "completedLessons": [],
+    *     "createdAt": "2023-12-11T04:04:54.215Z",
+    *     "updatedAt": "2023-12-12T07:28:54.271Z",
+    *     "__v": 0,
+    *     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzY4YTY2NzExNzI2ZWQxYTlmZmJmOCIsImlhdCI6MTcwMjM2NjEzNCwiZXhwIjoxNzAyNDUyNTM0fQ.aFeNiHbfqZGOvOX97G7iTNV5pRnW3qxa3MsVa69BmE8"
+    * }
+    *
+    *
+    * @apiError Error-server Error when creating refresh token
+    * 
+     * @apiErrorExample Error-Response:
+     *     {
+     *       "result": "fail",
+     *       "code": "500",
+     *       "error": "Error loging in",
+     *       "data": {
+     *       "stringValue": "\"6571e4758e1ac9a00c5036f31\"",
+     *       "valueType": "string",
+     *       "kind": "ObjectId",
+     *       "value": "6571e4758e1ac9a00c5036f31",
+     *       "path": "_id",
+     *       "reason": {},
+     *       "name": "CastError",
+     *       "message": "Cast to ObjectId failed for value \"6571e4758e1ac9a00c5036f31\" (type string) at path \"_id\" for model \"courselist\""
+     *        },
+     *       "all": "Internal Server Error"
+     *     }
+     * 
+     */
+
+    app.get("/user/all-user", authMiddleware, isAdmin, userService.getAllUser);
+    /**
+     * @api {GET} /user/all-user Get All Users
+     *
+     * @apiVersion 0.0.0
+     * @apiName Get All Users
+     * @apiGroup User
+     * @apiPermission Admin
+     *
+     * @apiDescription Get a list of all users
+     *
+     * 
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/user/all-user
+     * 
+     * 
+     * @apiSuccess {Array} users List of users with their profiles
+     * @apiSuccess {String} _id User's unique ID
+     * @apiSuccess {String} firstname User's first name
+     * @apiSuccess {String} lastname User's last name
+     * @apiSuccess {String} email User's email
+     * @apiSuccess {String} mobile User's mobile number
+     * @apiSuccess {String} role User's role (e.g., "user", "admin")
+     * @apiSuccess {Array} courselist List of courses of the user
+     * @apiSuccess {Array} completedLessons List of completed lessons by the user
+     * @apiSuccess {Timestamp} createdAt User's creation time
+     * @apiSuccess {Timestamp} updatedAt User's last update time
+     * @apiSuccess {String} refreshToken User's refresh token (if available)
+     *
+     * @apiSuccessExample Success-Response:
+     * [
+     *    {
+     *       "_id": "65768a66711726ed1a9ffbf8",
+     *       "firstname": "hoa",
+     *       "lastname": "quang",
+     *       "email": "kiritoyukile23@gmail.com",
+     *       "mobile": "1243",
+     *       "role": "user",
+     *       "courselist": [],
+     *       "completedLessons": [],
+     *       "createdAt": "2023-12-11T04:04:54.215Z",
+     *       "updatedAt": "2023-12-12T07:28:54.271Z",
+     *       "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+     *    },
+     *    // ... additional user objects
+     * ]
+     *
+     *
+     * @apiError ErrorGettingAllUsers
+     * 
+     * @apiErrorExample Error-Response:
+     *     {
+     *       "result": "fail",
+     *       "code": "500",
+     *       "error": "Error retrieving user list",
+     *       "data": null,
+     *       "all": "Internal Server Error"
+     *     }
+     * 
+     */
+    
     app.get('/user/course-list',authMiddleware,userService.getCourseList);
     /**
      * @api {GET} /user/course-list Get Course List
@@ -581,69 +776,5 @@ module.exports = function (app) {
      *
      * 
      */
-    app.get('/user/profile',authMiddleware,userService.getaUser);
-            /**
-     * @api {GET} /user/profile Profile
-     *
-     * @apiVersion 0.0.0
-     * @apiName Get a User
-     * @apiGroup User
-     * @apiPermission Log in User
-     *
-     * @apiDescription View Profile of User
-     *
-     * 
-     * @apiExample Example usage:
-     *      curl -i http://localhost:3000/user/profile
-     * 
-     * 
-    * @apiSuccess {Json} user user and the course list
-     * @apiSuccess {String} fname name of the user
-     * @apiSuccess {String} lastname name of the user
-     * @apiSuccess {String} email email of the user
-     * @apiSuccess {String} mobile mobile of the user
-     * @apiSuccess {Array} Courselist list of courses of user
-     * @apiSuccess {Timestamp} createdAt creation time
-     * @apiSuccess {Timestamp} updatedAt update time
-     *
-    * @apiSuccessExample Success-Response:
-    * {
-    *     "_id": "65768a66711726ed1a9ffbf8",
-    *     "firstname": "hoa",
-    *     "lastname": "quang",
-    *     "email": "kiritoyukile23@gmail.com",
-    *     "mobile": "1243",
-    *     "role": "user",
-    *     "password": "$2b$10$pOTt1KCRcwSifkhsEJPRcOUmjxa3m7fQhlsmW58VmLN8V.LxZukEq",
-    *     "courselist": [],
-    *     "completedLessons": [],
-    *     "createdAt": "2023-12-11T04:04:54.215Z",
-    *     "updatedAt": "2023-12-12T07:28:54.271Z",
-    *     "__v": 0,
-    *     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzY4YTY2NzExNzI2ZWQxYTlmZmJmOCIsImlhdCI6MTcwMjM2NjEzNCwiZXhwIjoxNzAyNDUyNTM0fQ.aFeNiHbfqZGOvOX97G7iTNV5pRnW3qxa3MsVa69BmE8"
-    * }
-    *
-    *
-    * @apiError Error-server Error when creating refresh token
-    * 
-     * @apiErrorExample Error-Response:
-     *     {
-     *       "result": "fail",
-     *       "code": "500",
-     *       "error": "Error loging in",
-     *       "data": {
-     *       "stringValue": "\"6571e4758e1ac9a00c5036f31\"",
-     *       "valueType": "string",
-     *       "kind": "ObjectId",
-     *       "value": "6571e4758e1ac9a00c5036f31",
-     *       "path": "_id",
-     *       "reason": {},
-     *       "name": "CastError",
-     *       "message": "Cast to ObjectId failed for value \"6571e4758e1ac9a00c5036f31\" (type string) at path \"_id\" for model \"courselist\""
-     *        },
-     *       "all": "Internal Server Error"
-     *     }
-     * 
-     */
-
+    
 }

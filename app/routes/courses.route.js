@@ -3,6 +3,7 @@ const courseService = require('../services/courses.service');
 const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 
 module.exports = function (app) {
+
     app.post('/course/create',authMiddleware,isAdmin, courseService.createCourse);
     /**
      * @api {POST} /course/create Create One course
@@ -66,6 +67,163 @@ module.exports = function (app) {
      *     },
      *     "all": "Internal Server Error"
      * }
+     */
+    app.put("/course/:id", authMiddleware, isAdmin, courseService.updateCourse);
+        /**
+     * @api {PUT} /course/:id Update One Course
+     * @apiVersion 0.0.0
+     * @apiName Update One Course
+     * @apiGroup Course
+     * @apiPermission Admin
+     *
+     * @apiDescription admin update a course
+     *
+     * @apiBody {String} Title title of the course
+     * @apiBody {String} slug slug of the course
+     * @apiBody {String} description description of the course
+     * @apiBody {String} LearningTime LearningTime of the course
+     * @apiBody {Array} Rating the ratings of course
+     * @apiBody {Timestamp} createdAt creation time
+     * @apiBody {Timestamp} updatedAt update time
+     *
+
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/course/:id
+     * 
+     * @apiSuccess {String} Title title of the course
+     * @apiSuccess {String} slug slug of the course
+     * @apiSuccess {String} description description of the course
+     * @apiSuccess {String} LearningTime LearningTime of the course
+     * @apiSuccess {Array} Rating the ratings of course
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+    *     "_id": "65772464288fef940490a95b",
+    *     "title": "Javasript from Zero",
+    *     "slug": "javasript-from-zero",
+    *     "description": "A beginner-friendly course that takes you from ground zero to confidently mastering the essentials of JavaScript programming.",
+    *     "course": "6577243c288fef940490a958",
+    *     "courselist": [
+    *         "6577250f3201738008e39659",
+    *         "657725fbb9465c59933d2dfa",
+    *         "6577323f184ffadb9fe4cb61",
+    *         "65773243184ffadb9fe4cb66",
+    *         "657732505dd5c3024a56faaa",
+    *         "6577325e2615694f54dff5f1",
+    *         "657732d37746f00eaf5979fc",
+    *         "6577332b489541c6c5a9fbbb"
+    *     ],
+    *     "Numberofcourse": 8,
+    *     "totalrating": "0",
+    *     "ratings": [
+    *         {
+    *             "star": 4,
+    *             "comment": "so good",
+    *             "postedby": "65768a66711726ed1a9ffbf8",
+    *             "_id": "65773705d60213baa44307a3"
+    *         }
+    *     ],
+    *     "createdAt": "2023-12-11T15:01:56.481Z",
+    *     "updatedAt": "2023-12-11T16:21:25.959Z",
+    *     "__v": 0
+    * }
+    * 
+     *@apiError ErrorRating Error occur when Updating
+     *  
+     *@apiErrorExample Error-Response:
+     * {
+    *     "result": "fail",
+    *     "code": "500",
+    *     "error": "Error Updating course",
+    *     "data": {
+    *         "stringValue": "\"65772464288fef940490a95b1\"",
+    *         "valueType": "string",
+    *         "kind": "ObjectId",
+    *         "value": "65772464288fef940490a95b1",
+    *         "path": "_id",
+    *         "reason": {},
+    *         "name": "CastError",
+    *         "message": "Cast to ObjectId failed for value \"65772464288fef940490a95b1\" (type string) at path \"_id\" for model \"Course\""
+    *     },
+    *     "all": "Internal Server Error"
+    * }
+
+     */
+    app.delete("/course/:id", authMiddleware, isAdmin, courseService.deleteCourse);
+            /**
+     * @api {DELETE} /course/:id Delete One Course
+     * @apiVersion 0.0.0
+     * @apiName Delete One Course
+     * @apiGroup Course
+     * @apiPermission Admin
+     *
+     * @apiDescription admin Delete a course
+     *
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/course/:id
+     * 
+     * @apiSuccess {String} Title title of the course
+     * @apiSuccess {String} slug slug of the course
+     * @apiSuccess {String} description description of the course
+     * @apiSuccess {String} LearningTime LearningTime of the course
+     * @apiSuccess {Array} Rating the ratings of course
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     *
+     * @apiSuccessExample Success-Response:
+     * {
+    *     "_id": "65772464288fef940490a95b",
+    *     "title": "Javasript from Zero",
+    *     "slug": "javasript-from-zero",
+    *     "description": "A beginner-friendly course that takes you from ground zero to confidently mastering the essentials of JavaScript programming.",
+    *     "course": "6577243c288fef940490a958",
+    *     "courselist": [
+    *         "6577250f3201738008e39659",
+    *         "657725fbb9465c59933d2dfa",
+    *         "6577323f184ffadb9fe4cb61",
+    *         "65773243184ffadb9fe4cb66",
+    *         "657732505dd5c3024a56faaa",
+    *         "6577325e2615694f54dff5f1",
+    *         "657732d37746f00eaf5979fc",
+    *         "6577332b489541c6c5a9fbbb"
+    *     ],
+    *     "Numberofcourse": 8,
+    *     "totalrating": "0",
+    *     "ratings": [
+    *         {
+    *             "star": 4,
+    *             "comment": "so good",
+    *             "postedby": "65768a66711726ed1a9ffbf8",
+    *             "_id": "65773705d60213baa44307a3"
+    *         }
+    *     ],
+    *     "createdAt": "2023-12-11T15:01:56.481Z",
+    *     "updatedAt": "2023-12-11T16:21:25.959Z",
+    *     "__v": 0
+    * }
+    * 
+     *@apiError ErrorRating Error occur when Deleting
+     *  
+     *@apiErrorExample Error-Response:
+     * {
+    *     "result": "fail",
+    *     "code": "500",
+    *     "error": "Error Deleting course",
+    *     "data": {
+    *         "stringValue": "\"65772464288fef940490a95b1\"",
+    *         "valueType": "string",
+    *         "kind": "ObjectId",
+    *         "value": "65772464288fef940490a95b1",
+    *         "path": "_id",
+    *         "reason": {},
+    *         "name": "CastError",
+    *         "message": "Cast to ObjectId failed for value \"65772464288fef940490a95b1\" (type string) at path \"_id\" for model \"Course\""
+    *     },
+    *     "all": "Internal Server Error"
+    * }
+
      */
     app.put('/course/rating',authMiddleware ,courseService.rating);
         /**
@@ -284,7 +442,7 @@ module.exports = function (app) {
     *     "all": "Internal Server Error"
     * }
     */
-
+    app.get('/course/:id/lesson', courseService.getAllLesson);
     app.get('/course/:id', courseService.getOneCourse);
     /**
      * @api {GET} /course/:id Get One course
@@ -372,5 +530,6 @@ module.exports = function (app) {
      *   }
      * 
      */
+
  
 };

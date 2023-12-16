@@ -17,6 +17,39 @@ module.exports = {
     }
   }),
 
+  updateLesson: asyncHandler(async (req, res) => {
+    const { id } = req.params;
+    try {
+     const updatedLesson = await Lesson.findByIdAndUpdate(id, req.body, {
+       new: true,
+     });
+     if(!updatedLesson) return sendError(res, '404', 'Lesson not found', 404, 'Not Found');
+     res.json(updatedLesson);
+   } catch (error) {
+     sendError(res, '500', 'Error updating Lesson', 500, 'Internal Server Error', error);
+     throw new Error(error);
+   }
+ }),
+
+ deleteLesson: asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedLesson = await Lesson.findByIdAndDelete(id);
+
+    if (!deletedLesson) {
+      return sendError(res, '404', 'Lesson not found', 404, 'Not Found');
+    }
+
+    await Course.findByIdAndUpdate(deletedLesson.course, { $inc: { NumberofLesson: -1 } });
+    await Course.findByIdAndUpdate(deletedLesson.course, { $pull: { lessonlist: deletedLesson._id } });
+
+    res.json({ message: 'Lesson deleted successfully' });
+  } catch (error) {
+    sendError(res, '500', 'Error deleting lesson', 500, 'Internal Server Error', error);
+    throw new Error(error);
+  }
+}),
+
   getOneLesson: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {
@@ -29,21 +62,6 @@ module.exports = {
       res.json(findLesson);
     } catch (error) {
       sendError(res, '500', 'Error fetching Lesson by ID', 500, 'Internal Server Error', error);
-      throw new Error(error);
-    }
-  }),
-
-  getAllLesson: asyncHandler(async function (req, res) {
-    const courseId = req.params.id;
-    try {
-      const course = await Course.findById(courseId);
-      const allLessonsOfCourse = await Lesson.find({ course: courseId });
-      if(!course){
-        return sendError(res, '404', 'Course not found', 404, 'Not Found');
-      }
-      res.json(allLessonsOfCourse);
-    } catch (error) {
-      sendError(res, '500', 'Error fetching all lessons of the course', 500, 'Internal Server Error', error);
       throw new Error(error);
     }
   }),

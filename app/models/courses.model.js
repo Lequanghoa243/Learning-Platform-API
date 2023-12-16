@@ -1,6 +1,5 @@
-const mongoose = require('mongoose'); // Erase if already required
+const mongoose = require('mongoose'); 
 
-// Declare the Schema of the Mongo model
 var courseSchema = new mongoose.Schema(
     {
         title: {
@@ -28,7 +27,7 @@ var courseSchema = new mongoose.Schema(
           {
             url: String,
           },
-          lessonlist: [{type: mongoose.Schema.Types.ObjectId, ref:"Lesson" }],
+        lessonlist: [{type: mongoose.Schema.Types.ObjectId, ref:"Lesson" }],
         NumberofLesson: {
           type: Number,
           default: 0,
@@ -48,5 +47,5 @@ var courseSchema = new mongoose.Schema(
       { timestamps: true }
 ); 
 
-//Export the model
+
 module.exports = mongoose.model('Course', courseSchema);

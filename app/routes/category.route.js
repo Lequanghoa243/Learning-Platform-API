@@ -2,6 +2,7 @@ const categoryService = require('../services/category.service');
 const {authMiddleware, isAdmin} = require('../middleware/authmiddleware');
 
 module.exports = function (app) {
+
     app.post('/category/create', authMiddleware, isAdmin ,categoryService.createCategory);
      /**
      * @api {POST} /category/create Create One Category
@@ -38,6 +39,106 @@ module.exports = function (app) {
      *     "result": "fail",
      *     "code": "500",
      *     "error": "Error creating category",
+     *     "data": {
+     *         "index": 0,
+     *         "code": 11000,
+     *         "keyPattern": {
+     *             "title": 1
+     *         },
+     *         "keyValue": {
+     *             "title": "Programming language"
+     *         }
+     *     },
+     *     "all": "Internal Server Error"
+     * }
+
+     */
+    app.put("/category/:id", authMiddleware, isAdmin, categoryService.updateCategory);
+         /**
+     * @api {PUT} /category/:id Update One Category
+     * @apiVersion 0.0.0
+     * @apiName Update Category
+     * @apiGroup Category
+     * @apiPermission User with role Admin
+     *
+     * @apiDescription Update one category for course
+     *
+     * @apiBody {String} Title Title of the category
+     *
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/category/65770ab89f0dbfabc63efc2b
+     * @apiSuccess {String} title title of the created category
+     * @apiSuccess {String} id id of the created category
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     * 
+     *
+     * @apiSuccessExample Success-Response:
+     *     {
+     *           "title": "Data analysis",
+     *           "_id": "65770ab89f0dbfabc63efc2b",
+     *           "createdAt": "2023-12-11T13:12:24.970Z",
+     *           "updatedAt": "2023-12-11T13:12:24.970Z",
+     *           "__v": 0
+     *     }
+     *
+     * @apiError ErrorupdatingCategory Error occur when updating Category
+     *
+     * @apiErrorExample Error-Response:
+     * {
+     *     "result": "fail",
+     *     "code": "500",
+     *     "error": "Error updating category",
+     *     "data": {
+     *         "index": 0,
+     *         "code": 11000,
+     *         "keyPattern": {
+     *             "title": 1
+     *         },
+     *         "keyValue": {
+     *             "title": "Programming language"
+     *         }
+     *     },
+     *     "all": "Internal Server Error"
+     * }
+
+     */
+    app.delete("/category/:id", authMiddleware, isAdmin, categoryService.deleteCategory);
+             /**
+     * @api {DELETE} /category/:id Delete One Category
+     * @apiVersion 0.0.0
+     * @apiName Delete Category
+     * @apiGroup Category
+     * @apiPermission User with role Admin
+     *
+     * @apiDescription Delete one category for course
+     *
+     * @apiBody {String} Title Title of the category
+     *
+     * @apiExample Example usage:
+     *      curl -i http://localhost:3000/category/65770ab89f0dbfabc63efc2b
+     * @apiSuccess {String} title title of the deleted category
+     * @apiSuccess {String} id id of the deleted category
+     * @apiSuccess {Timestamp} createdAt creation time
+     * @apiSuccess {Timestamp} updatedAt update time
+     * 
+     *
+     * @apiSuccessExample Success-Response:
+     *     {
+     *           "title": "Data analysis",
+     *           "_id": "65770ab89f0dbfabc63efc2b",
+     *           "createdAt": "2023-12-11T13:12:24.970Z",
+     *           "updatedAt": "2023-12-11T13:12:24.970Z",
+     *           "__v": 0
+     *     }
+     *
+     * @apiError ErrordeletingCategory Error occur when deleting Category
+     *
+     * @apiErrorExample Error-Response:
+     * {
+     *     "result": "fail",
+     *     "code": "500",
+     *     "error": "Error deleting category",
      *     "data": {
      *         "index": 0,
      *         "code": 11000,

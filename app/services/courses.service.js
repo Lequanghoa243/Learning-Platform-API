@@ -4,6 +4,7 @@ const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
 const { sendError } = require('../utils/restware');
 
+
 module.exports = {
   createCourse: asyncHandler(async (req, res) => {
     try {
@@ -15,6 +16,31 @@ module.exports = {
     } catch (error) {
       sendError(res, '500', 'Error creating course', 500, 'Internal Server Error', error);
     }
+  }),
+    updateCourse: asyncHandler(async (req, res) => {
+      const { id } = req.params;
+      try {
+      const updatedCourse = await Course.findByIdAndUpdate(id, req.body, {
+        new: true,
+      });
+      if(!updatedCourse) return sendError(res, '404', 'Course not found', 404, 'Not Found');
+      res.json(updatedCourse);
+    } catch (error) {
+      sendError(res, '500', 'Error updating Course', 500, 'Internal Server Error', error);
+      throw new Error(error);
+    }
+  }),
+
+  deleteCourse: asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  try {
+    const deletedCourse = await Course.findByIdAndDelete(id);
+    if(!deletedCourse) return sendError(res, '404', 'Course not found', 404, 'Not Found');
+    res.json(deletedCourse);
+  } catch (error) {
+      sendError(res, '500', 'Error deleting Course', 500, 'Internal Server Error', error);
+    throw new Error(error);
+  } 
   }),
 
   getAllCourse: asyncHandler(async function (req, res) {
@@ -133,4 +159,16 @@ module.exports = {
       sendError(res, '500', 'Error enrolling in the course', 500, 'Internal Server Error', error);
     }
   }),
+
+ getAllLesson: asyncHandler(async (req, res) => {
+  const courseId = req.params.id;
+    try {
+      const findCourse = await Course.findById(courseId).populate("lessonlist");
+        res.json(findCourse);
+    } catch (error) {
+      sendError(res, '500', 'Error fetching all lessons of the course', 500, 'Internal Server Error', error);
+      throw new Error(error);
+    }
+  }),
 };
+ 
