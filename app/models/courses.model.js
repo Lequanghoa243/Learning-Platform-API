@@ -24,9 +24,7 @@ var courseSchema = new mongoose.Schema(
           required: true,
         },
         images:
-          {
-            url: String,
-          },
+         [],
         lessonlist: [{type: mongoose.Schema.Types.ObjectId, ref:"Lesson" }],
         NumberofLesson: {
           type: Number,
