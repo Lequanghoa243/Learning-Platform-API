@@ -20,7 +20,7 @@ module.exports = {
   getAllLesson: asyncHandler(async (req, res) => {
     
     try {
-      const newLesson = await Lesson.find().populate('course');
+      const newLesson = await Lesson.find();
       res.json(newLesson);
     } catch (error) {
       sendError(res, '500', 'Error creating lesson', 500, 'Internal Server Error', error);
