@@ -5,7 +5,8 @@ var courseSchema = new mongoose.Schema(
         title: {
           type: String,
           required: true,
-          trim: true,
+          unique: true,
+          index: true,
         },
         slug: {
           type: String,
@@ -19,13 +20,17 @@ var courseSchema = new mongoose.Schema(
         },
         learningTime: {type: String},
         category: {
-          type: mongoose.Schema.Types.ObjectId,  
+          type: String,  
           ref: 'Category',  
           required: true,
         },
         images:
-         [],
-        lessonlist: [{type: mongoose.Schema.Types.ObjectId, ref:"Lesson" }],
+         [
+          {
+            public_id: String,
+            url: String,
+          },
+         ],
         NumberofLesson: {
           type: Number,
           default: 0,

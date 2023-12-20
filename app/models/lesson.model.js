@@ -22,7 +22,7 @@ const lessonSchema = new mongoose.Schema(
             required: true,
         },
         course: {
-            type: mongoose.Schema.Types.ObjectId,
+            type: String,
             ref: 'Course',  
             required: true,
         },

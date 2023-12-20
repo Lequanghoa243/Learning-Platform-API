@@ -2,7 +2,7 @@ const lessonService = require('../services/lesson.service');
 const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 
 module.exports = function (app) {
-
+    app.get('/lesson', lessonService.getAllLesson);
     app.post('/lesson/create', authMiddleware, isAdmin,lessonService.createLesson);
      /**
      * @api {POST} /Lesson/create Create One Lesson

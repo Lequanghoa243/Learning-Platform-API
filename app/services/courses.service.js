@@ -15,6 +15,7 @@ module.exports = {
       res.json(newCourse);
     } catch (error) {
       sendError(res, '500', 'Error creating course', 500, 'Internal Server Error', error);
+      throw new Error(error)
     }
   }),
     updateCourse: asyncHandler(async (req, res) => {
@@ -51,7 +52,6 @@ module.exports = {
         const searchRegex = new RegExp(req.query.search, 'i');
         query.title = searchRegex;
       }
-
       const getAllCourse = await Course.find(query);
       res.json(getAllCourse);
     } catch (error) {
@@ -67,7 +67,6 @@ module.exports = {
       if (!findCourse) {
         return sendError(res, '404', 'Course not found', 404, 'Not Found');
       }
-
       res.json(findCourse);
     } catch (error) {
       sendError(res, '500', 'Error fetching course by ID', 500, 'Internal Server Error', error);

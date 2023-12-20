@@ -5,11 +5,22 @@ const { sendError } = require('../utils/restware');
 
 module.exports = {
   createLesson: asyncHandler(async (req, res) => {
-    const course = req.body.course;
+    const course = req.body.course.title;
     try {
       const newLesson = await Lesson.create(req.body);
       await Course.findByIdAndUpdate(course, { $push: { lessonlist: newLesson._id }, $inc: { NumberofLesson: 1 } });
 
+      res.json(newLesson);
+    } catch (error) {
+      sendError(res, '500', 'Error creating lesson', 500, 'Internal Server Error', error);
+      throw new Error(error);
+    }
+  }),
+
+  getAllLesson: asyncHandler(async (req, res) => {
+    
+    try {
+      const newLesson = await Lesson.find().populate('course');
       res.json(newLesson);
     } catch (error) {
       sendError(res, '500', 'Error creating lesson', 500, 'Internal Server Error', error);

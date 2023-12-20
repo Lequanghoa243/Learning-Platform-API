@@ -62,7 +62,7 @@ module.exports = {
                 return sendError(res, '404', 'Category not found', 404, 'Not Found');
             }
 
-            const populatedCategory = await Course.find({ category: findCategory._id });
+            const populatedCategory = await Course.find({ category: findCategory.title });
 
             res.json({ category: findCategory, courses: populatedCategory });
         } catch (error) {

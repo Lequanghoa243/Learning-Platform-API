@@ -60,7 +60,7 @@ module.exports = {
 
   getAllUser: asyncHandler(async function (req, res) {
     try {
-      const getUsers = await User.find().populate("wishlist");
+      const getUsers = await User.find();
       res.json(getUsers);
     } catch (error) {
       throw new Error(error);
