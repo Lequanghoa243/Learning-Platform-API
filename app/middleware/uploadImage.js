@@ -25,4 +25,4 @@ const uploadPhoto = multer({
 });
 
 
-module.exports = { uploadPhoto,courseImgResize  };
+module.exports = { uploadPhoto  };
