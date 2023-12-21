@@ -1,7 +1,5 @@
 const multer = require("multer");
-const sharp = require("sharp");
 const path = require("path");
-const fs = require("fs");
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../public/images/"));
@@ -25,17 +23,6 @@ const uploadPhoto = multer({
   fileFilter: multerFilter,
   limits: { fileSize: 2000000 },
 });
-
-const courseImgResize = async (req, res, next) => {
-  if (!req.files) return next();
-  await Promise.all(
-    req.files.map(async (file) => {
-      await sharp(file.path)
-      fs.unlinkSync(`public/images/${file.filename}`);
-    })
-  );
-  next();
-};
 
 
 module.exports = { uploadPhoto,courseImgResize  };
