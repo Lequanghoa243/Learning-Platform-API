@@ -132,18 +132,7 @@ module.exports = {
     try {
       const user = await User.findById(_id);
       const alreadyadded = user.courselist.find((id) => id.toString() === courseId);
-      if (alreadyadded) {
-        let user = await User.findByIdAndUpdate(
-          _id,
-          {
-            $pull: { courselist: courseId },
-          },
-          {
-            new: true,
-          }
-        );
-        res.json(user);
-      } else {
+      if (!alreadyadded)  {
         let user = await User.findByIdAndUpdate(
           _id,
           {

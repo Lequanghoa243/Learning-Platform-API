@@ -251,6 +251,7 @@ module.exports = {
       res.json(findUser);
     } catch (error) {
       sendError(res, '500', 'Error fetching user course list', 500, 'Internal Server Error', error);
+      throw new Error(error)
     }
   }),
 };

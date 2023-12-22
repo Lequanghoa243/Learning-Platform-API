@@ -72,70 +72,7 @@ module.exports = function (app) {
      * 
      */
     
-    app.get("/user/:id", authMiddleware, isAdmin, userService.getaUser);
-    /**
-     * @api {GET} /user/:id Get A User
-     *
-     * @apiVersion 0.0.0
-     * @apiName Get a User
-     * @apiGroup User
-     * @apiPermission Admin
-     *
-     * @apiDescription View Profile of User
-     *
-     * 
-     * @apiExample Example usage:
-     *      curl -i http://localhost:3000/user/profile
-     * 
-     * 
-    * @apiSuccess {Json} user user and the course list
-     * @apiSuccess {String} fname name of the user
-     * @apiSuccess {String} lastname name of the user
-     * @apiSuccess {String} email email of the user
-     * @apiSuccess {String} mobile mobile of the user
-     * @apiSuccess {Array} Courselist list of courses of user
-     * @apiSuccess {Timestamp} createdAt creation time
-     * @apiSuccess {Timestamp} updatedAt update time
-     *
-    * @apiSuccessExample Success-Response:
-    * {
-    *     "_id": "65768a66711726ed1a9ffbf8",
-    *     "firstname": "hoa",
-    *     "lastname": "quang",
-    *     "email": "kiritoyukile23@gmail.com",
-    *     "mobile": "1243",
-    *     "role": "user",
-    *     "password": "$2b$10$pOTt1KCRcwSifkhsEJPRcOUmjxa3m7fQhlsmW58VmLN8V.LxZukEq",
-    *     "courselist": [],
-    *     "completedLessons": [],
-    *     "createdAt": "2023-12-11T04:04:54.215Z",
-    *     "updatedAt": "2023-12-12T07:28:54.271Z",
-    *     "__v": 0,
-    *     "refreshToken": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY1NzY4YTY2NzExNzI2ZWQxYTlmZmJmOCIsImlhdCI6MTcwMjM2NjEzNCwiZXhwIjoxNzAyNDUyNTM0fQ.aFeNiHbfqZGOvOX97G7iTNV5pRnW3qxa3MsVa69BmE8"
-    * }
-    *
-    *
-    * @apiError Error-server Error when creating refresh token
-    * 
-     * @apiErrorExample Error-Response:
-     *     {
-     *       "result": "fail",
-     *       "code": "500",
-     *       "error": "Error loging in",
-     *       "data": {
-     *       "stringValue": "\"6571e4758e1ac9a00c5036f31\"",
-     *       "valueType": "string",
-     *       "kind": "ObjectId",
-     *       "value": "6571e4758e1ac9a00c5036f31",
-     *       "path": "_id",
-     *       "reason": {},
-     *       "name": "CastError",
-     *       "message": "Cast to ObjectId failed for value \"6571e4758e1ac9a00c5036f31\" (type string) at path \"_id\" for model \"courselist\""
-     *        },
-     *       "all": "Internal Server Error"
-     *     }
-     * 
-     */
+  
 
     app.get("/user/all-user", authMiddleware, isAdmin, userService.getAllUser);
     /**

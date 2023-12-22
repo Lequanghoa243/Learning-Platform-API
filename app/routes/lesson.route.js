@@ -170,7 +170,7 @@ app.delete("/lesson/:id", authMiddleware, isAdmin, lessonService.deleteLesson);
  * }
  */
 
-    app.get('/lesson/:id',lessonService.getOneLesson);
+    app.get('/lesson/:id',authMiddleware ,lessonService.getOneLesson);
     /**
      * @api {GET} /lesson/:id Get One lesson
      * @apiVersion 0.0.0
