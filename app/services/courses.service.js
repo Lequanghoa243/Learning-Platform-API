@@ -1,4 +1,5 @@
 const Course = require('../models/courses.model');
+const Lesson = require('../models/lesson.model');
 const User = require('../models/users.model');
 const asyncHandler = require('express-async-handler');
 const slugify = require('slugify');
@@ -161,13 +162,19 @@ module.exports = {
 
  getAllLesson: asyncHandler(async (req, res) => {
   const courseId = req.params.id;
-    try {
-      const findCourse = await Course.findById(courseId).populate("lessonlist");
-        res.json(findCourse);
-    } catch (error) {
-      sendError(res, '500', 'Error fetching all lessons of the course', 500, 'Internal Server Error', error);
-      throw new Error(error);
+  try {
+    const findCourse = await Course.findById(courseId);
+
+    if (!findCourse) {
+      return res.status(404).json({ message: 'Course not found' });
     }
+
+    const allLessons = await Lesson.find({ course: findCourse.title });
+    res.json(allLessons);
+  } catch (error) {
+
+    res.status(500).json({ message: 'Error fetching all lessons of the course' });
+  }
   }),
 };
  

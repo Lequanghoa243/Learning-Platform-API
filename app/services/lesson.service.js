@@ -5,17 +5,30 @@ const { sendError } = require('../utils/restware');
 
 module.exports = {
   createLesson: asyncHandler(async (req, res) => {
-    const course = req.body.course.title;
-    try {
-      const newLesson = await Lesson.create(req.body);
-      await Course.findByIdAndUpdate(course, { $push: { lessonlist: newLesson._id }, $inc: { NumberofLesson: 1 } });
+    const courseName = req.body.course; // Assuming title is the name of the course
 
-      res.json(newLesson);
-    } catch (error) {
-      sendError(res, '500', 'Error creating lesson', 500, 'Internal Server Error', error);
-      throw new Error(error);
+try {
+  const foundCourse = await Course.findOne({ title: courseName });
+
+  if (!foundCourse) {
+    return res.status(404).json({ message: 'Course not found' });
+  }
+
+  const newLesson = await Lesson.create(req.body);
+  await Course.findByIdAndUpdate(
+    foundCourse.id,
+    {
+      $inc: { NumberofLesson: 1 }
     }
-  }),
+  );
+
+  res.json(newLesson);
+} catch (error) {
+  sendError(res, '500', 'Error creating lesson', 500, 'Internal Server Error', error);
+  throw new Error(error);
+}
+
+ }),
 
   getAllLesson: asyncHandler(async (req, res) => {
     
@@ -50,9 +63,8 @@ module.exports = {
     if (!deletedLesson) {
       return sendError(res, '404', 'Lesson not found', 404, 'Not Found');
     }
-
-    await Course.findByIdAndUpdate(deletedLesson.course, { $inc: { NumberofLesson: -1 } });
-    await Course.findByIdAndUpdate(deletedLesson.course, { $pull: { lessonlist: deletedLesson._id } });
+    const findCourse = await Course.findOne({title: deletedLesson.course})
+    await Course.findByIdAndUpdate(findCourse, { $inc: { NumberofLesson: -1 } });
 
     res.json({ message: 'Lesson deleted successfully' });
   } catch (error) {

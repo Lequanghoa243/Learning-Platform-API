@@ -17,10 +17,7 @@ module.exports = {
         const newUser = await User.create(req.body);
         res.json(newUser);
       } else {
-        res.json({
-          msg: "User existed",
-          success: "false"
-        });
+        sendError(res, '500', 'Error registering user', 500, 'Internal Server Error', 'User Existed');
       }
     } catch (error) {
       sendError(res, '500', 'Error registering user', 500, 'Internal Server Error', error);
