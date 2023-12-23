@@ -105,9 +105,7 @@ module.exports = {
             token: generateToken(findUser?._id),
           });
       } else {
-        res.json({
-          msg: "Wrong Email or Password",
-        });
+          sendError(res, '404', 'Account not Found', 404, 'Account not Found', error); 
       }
     } catch (error) {
       sendError(res, '500', 'Error logging in', 500, 'Internal Server Error', error);
