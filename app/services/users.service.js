@@ -142,10 +142,9 @@ module.exports = {
   }),
 
   getaUser: asyncHandler(async function (req, res) {
-    const { _id } = req.user;
-    validateMongoDbId(_id);
+    const { postedby } = req.body;
     try {
-      const getaUser = await User.findById(_id);
+      const getaUser = await User.findById(postedby);
       res.json(getaUser);
     } catch (error) {
       sendError(res, '500', 'Error fetching user', 500, 'Internal Server Error', error);

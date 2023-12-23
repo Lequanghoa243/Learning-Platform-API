@@ -63,7 +63,7 @@ module.exports = {
   getOneCourse: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {
-      const findCourse = await Course.findById(id);
+      const findCourse = await Course.findById(id).populate("ratings.postedby");
 
       if (!findCourse) {
         return sendError(res, '404', 'Course not found', 404, 'Not Found');
@@ -77,16 +77,24 @@ module.exports = {
   rating: asyncHandler(async function (req, res) {
     const { _id } = req.user;
     const { star, courseId, comment } = req.body;
+    const course = await Course.findById(courseId);
+
     try {
-      const course = await Course.findById(courseId);
-      let alreadyRated = course.ratings.find((userId) => userId.postedby.toString() === _id.toString());
+  
+    
+      let alreadyRated = course.ratings.find((rating) => rating.postedby.toString() === _id.toString());
+    
       if (alreadyRated) {
+        // If the user has already rated, update the existing rating
         const updateRating = await Course.updateOne(
           {
-            ratings: { $elemMatch: alreadyRated },
+            'ratings.postedby': _id,
           },
           {
-            $set: { 'ratings.$.star': star, 'ratings.$.comment': comment },
+            $set: {
+              'ratings.$.star': star,
+              'ratings.$.comment': comment,
+            },
           },
           {
             new: true,
@@ -94,6 +102,7 @@ module.exports = {
         );
         res.json(updateRating);
       } else {
+
         const rateCourse = await Course.findByIdAndUpdate(
           courseId,
           {
@@ -111,15 +120,17 @@ module.exports = {
         );
         res.json(rateCourse);
       }
-
+    
+      // Calculate and update the total rating for the course
       const getallratings = await Course.findById(courseId);
       let totalRating = getallratings.ratings.length;
       let ratingsum = getallratings.ratings.map((item) => item.star).reduce((prev, curr) => prev + curr, 0);
       let actualRating = Math.round(ratingsum / totalRating);
-
+    
       let finalproduct = await Course.findByIdAndUpdate(courseId, {
         totalrating: actualRating,
       }, { new: true });
+    
       res.json(finalproduct);
     } catch (error) {
       sendError(res, '500', 'Error rating course', 500, 'Internal Server Error', error);

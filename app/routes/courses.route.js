@@ -3,7 +3,7 @@ const courseService = require('../services/courses.service');
 const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 
 module.exports = function (app) {
-
+    app.put('/course/rating',authMiddleware ,courseService.rating);
     app.post('/course/create',authMiddleware,isAdmin, courseService.createCourse);
     /**
      * @api {POST} /course/create Create One course
@@ -225,7 +225,7 @@ module.exports = function (app) {
     * }
 
      */
-    app.put('/course/rating',authMiddleware ,courseService.rating);
+    
         /**
      * @api {PUT} /course/rating Rating course
      * @apiVersion 0.0.0
