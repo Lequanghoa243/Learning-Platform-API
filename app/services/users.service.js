@@ -15,9 +15,10 @@ module.exports = {
       const findUser = await User.findOne({ email: email1 });
       if (!findUser) {
         const newUser = await User.create(req.body);
-        res.statusCode(200);
+        res.status(200).json(newUser);
       } else {
         sendError(res, '500', 'Error registering user', 500, 'Internal Server Error', 'User Existed');
+        console.log(res)
       }
     } catch (error) {
       sendError(res, '500', 'Error registering user', 500, 'Internal Server Error', error);

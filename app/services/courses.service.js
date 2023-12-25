@@ -79,29 +79,9 @@ module.exports = {
     const { star, courseId, comment } = req.body;
     const course = await Course.findById(courseId);
 
+
     try {
-  
-    
-      let alreadyRated = course.ratings.find((rating) => rating.postedby.toString() === _id.toString());
-    
-      if (alreadyRated) {
-        // If the user has already rated, update the existing rating
-        const updateRating = await Course.updateOne(
-          {
-            'ratings.postedby': _id,
-          },
-          {
-            $set: {
-              'ratings.$.star': star,
-              'ratings.$.comment': comment,
-            },
-          },
-          {
-            new: true,
-          }
-        );
-        res.json(updateRating);
-      } else {
+
 
         const rateCourse = await Course.findByIdAndUpdate(
           courseId,
@@ -119,9 +99,8 @@ module.exports = {
           }
         );
         res.json(rateCourse);
-      }
+
     
-      // Calculate and update the total rating for the course
       const getallratings = await Course.findById(courseId);
       let totalRating = getallratings.ratings.length;
       let ratingsum = getallratings.ratings.map((item) => item.star).reduce((prev, curr) => prev + curr, 0);
