@@ -73,20 +73,43 @@ try {
   }
 }),
 
-  getOneLesson: asyncHandler(async function (req, res) {
-    const { id } = req.params;
-    try {
-      const findLesson = await Lesson.findById(id);
+getOneLesson: asyncHandler(async function (req, res) {
+  const { id } = req.params;
+  const { _id } = req.user;
+  try {
+    const findLesson = await Lesson.findById(id);
+    const course = await Course.findOne({ title: findLesson.course });
 
-      if (!findLesson) {
-        return sendError(res, '404', 'Lesson not found', 404, 'Not Found');
-      }
-
-      res.json(findLesson);
-    } catch (error) {
-      sendError(res, '500', 'Error fetching Lesson by ID', 500, 'Internal Server Error', error);
-      throw new Error(error);
+    if (!course) {
+      return sendError(res, '404', 'Course not found', 404, 'Not Found');
     }
-  }),
+    if (!findLesson) {
+      return sendError(res, '404', 'Lesson not found', 404, 'Not Found');
+    }
+    if (!_id) {
+      return sendError(res, '400', 'User ID is required', 400, 'Bad Request');
+  }
+  let progress = await Progress.findOne({ user: _id, course: course._id });
+  if (!progress) {
+      progress = new Progress({ user: _id, course: course._id, percentage: 0 });  // Initialize with 0 percentage if new
+      await progress.save();  // Make sure to save the newly created progress record
+  }
+    
+    // Calculate new percentage
+    const totalLessons = course.NumberofLesson;
+    const sequence = findLesson.sequence;
+    const calculatedPercentage = ( sequence / totalLessons) * 100;
+
+    // Update progress if the new percentage is higher
+    if (calculatedPercentage > progress.percentage) {
+      progress.percentage = calculatedPercentage;
+      await progress.save();
+    }
+    res.json(findLesson);
+  } catch (error) {
+    sendError(res, '500', 'Error fetching Lesson by ID', 500, 'Internal Server Error', error);
+    throw new Error(error);
+  }
+}),
 
 };

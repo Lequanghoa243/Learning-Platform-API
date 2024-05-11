@@ -3,7 +3,9 @@ const courseService = require('../services/courses.service');
 const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 
 module.exports = function (app) {
+   app.get('/percentage/:id',authMiddleware,courseService.getPercentage);
     app.put('/course/rating',authMiddleware ,courseService.rating);
+    app.put('/course/wishlist', authMiddleware, courseService.addToWishlist);
     app.post('/course/create',authMiddleware,isAdmin, courseService.createCourse);
     /**
      * @api {POST} /course/create Create One course

@@ -19,6 +19,39 @@ module.exports = {
       throw new Error(error)
     }
   }),
+  addToWishlist : asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    const { courseId } = req.body;
+    try {
+      const user = await User.findById(_id);
+      const alreadyadded = user.wishlist.find((id) => id.toString() === courseId);
+      if (alreadyadded) {
+        let user = await User.findByIdAndUpdate(
+          _id,
+          {
+            $pull: { wishlist: courseId },
+          },
+          {
+            new: true,
+          }
+        );
+        res.json(user);
+      } else {
+        let user = await User.findByIdAndUpdate(
+          _id,
+          {
+            $push: { wishlist: courseId },
+          },
+          {
+            new: true,
+          }
+        );
+        res.json(user);
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  }),
     updateCourse: asyncHandler(async (req, res) => {
       const { id } = req.params;
       try {
@@ -59,7 +92,27 @@ module.exports = {
       sendError(res, '500', 'Error fetching all courses', 500, 'Internal Server Error', error);
     }
   }),
+  getPercentage: asyncHandler(async function (req, res) {
+    try {
+      const { id } = req.params;
+      const userId = req.user?._id; 
+      const findCourse = await Course.findById(id).populate("ratings.postedby");
+      if (!findCourse) {
+        return sendError(res, '404', 'Course not found', 404, 'Not Found');
+      }
 
+      // Only look for progress if the course exists
+      const progress = await Progress.findOne({ user: userId, course: id });
+
+      const response = {
+        progressPercentage: progress ? progress.percentage : -1  
+      };
+
+      res.json(response);
+    } catch (error) {
+      sendError(res, '500', 'Error fetching percentage', 500, 'Internal Server Error', error);
+    }
+  }),
   getOneCourse: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {

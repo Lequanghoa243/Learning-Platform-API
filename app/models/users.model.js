@@ -29,6 +29,7 @@ var userSchema = new mongoose.Schema({
         required:true,
     },
     courselist: [{type: mongoose.Schema.Types.ObjectId, ref:"Course" }],
+    wishlist: [{ type: mongoose.Schema.Types.ObjectId, ref: "Course" }],
     refreshToken: {type: String,},
     passwordChangedAt: Date,
     passwordResetToken: String,

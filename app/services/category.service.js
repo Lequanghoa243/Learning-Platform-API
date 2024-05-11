@@ -2,6 +2,7 @@ const Category = require('../models/category.model');
 const Course = require('../models/courses.model');
 const asyncHandler = require('express-async-handler');
 const { sendError } = require('../utils/restware'); 
+const User = require('../models/users.model');
 
 module.exports = {
     createCategory: asyncHandler(async (req, res) => {

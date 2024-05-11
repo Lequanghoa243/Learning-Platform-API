@@ -64,7 +64,15 @@ module.exports = {
       throw new Error(error);
     }
   }),
-
+ getWishlist: asyncHandler(async (req, res) => {
+    const { _id } = req.user;
+    try {
+      const findUser = await User.findById(_id).populate("wishlist");
+      res.json(findUser);
+    } catch (error) {
+      throw new Error(error);
+    }
+  }),
   handleRefreshToken: asyncHandler(async function (req, res) {
     try {
       const cookie = req.cookies;
