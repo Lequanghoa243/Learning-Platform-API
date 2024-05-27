@@ -97,15 +97,9 @@ module.exports = {
   getOneCourse: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {
-      const course = await Course.findById(id).populate({
-        path: 'ratings.postedby'
-      });
+    const findCourse = await Course.findById(id).populate("ratings.postedby");
 
-      if (!course) {
-        return sendError(res, '404', 'Course not found', 404, 'Not Found');
-      }
-
-      res.json(course);
+      res.json(findCourse);
     } catch (error) {
       sendError(res, '500', 'Error fetching course by ID', 500, 'Internal Server Error', error);
     }
