@@ -86,7 +86,11 @@ module.exports = {
         const searchRegex = new RegExp(req.query.search, 'i');
         query.title = searchRegex;
       }
-      const getAllCourse = await Course.find(query);
+
+          const getAllCourse = await Course.find(query).populate({
+            path: 'ratings.postedby',
+            select: 'firstname lastname'
+        });
       res.json(getAllCourse);
     } catch (error) {
       sendError(res, '500', 'Error fetching all courses', 500, 'Internal Server Error', error);
