@@ -131,8 +131,6 @@ module.exports = {
     const { _id } = req.user;
     const { star, courseId, comment } = req.body;
     const course = await Course.findById(courseId);
-    const user = await User.findById(_id);
-    const userName = `${user.firstname} ${user.lastname}`;
     try {
 
 
@@ -144,7 +142,6 @@ module.exports = {
                 star: star,
                 comment: comment,
                 postedby: _id,
-                username: userName,
               },
             },
           },
