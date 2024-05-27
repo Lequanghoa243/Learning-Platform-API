@@ -87,23 +87,7 @@ module.exports = {
         query.title = searchRegex;
       }
 
-      const courses = await Course.find(query).populate({
-        path: 'ratings.postedby',
-        select: 'firstname lastname'
-      });
-
-      // Add the name field
-      courses.forEach(course => {
-        course.ratings.forEach(rating => {
-          if (rating.postedby && rating.postedby.firstname && rating.postedby.lastname) {
-            rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
-            rating.postedby = rating.postedby._id.toString(); // Keep postedby as the user ID string
-          }
-        });
-      });
-
-      console.log(JSON.stringify(courses, null, 2)); // Debugging log
-
+      const courses = await Course.find(query);
       res.json(courses);
     } catch (error) {
       sendError(res, '500', 'Error fetching all courses', 500, 'Internal Server Error', error);
@@ -114,23 +98,12 @@ module.exports = {
     const { id } = req.params;
     try {
       const course = await Course.findById(id).populate({
-        path: 'ratings.postedby',
-        select: 'firstname lastname'
+        path: 'ratings.postedby'
       });
 
       if (!course) {
         return sendError(res, '404', 'Course not found', 404, 'Not Found');
       }
-
-      // Add the name field
-      course.ratings.forEach(rating => {
-        if (rating.postedby && rating.postedby.firstname && rating.postedby.lastname) {
-          rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
-          rating.postedby = rating.postedby._id.toString(); // Keep postedby as the user ID string
-        }
-      });
-
-      console.log(JSON.stringify(course, null, 2)); // Debugging log
 
       res.json(course);
     } catch (error) {
