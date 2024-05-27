@@ -78,7 +78,7 @@ module.exports = {
   } 
   }),
 
-    getAllCourse: asyncHandler(async function (req, res) {
+      getAllCourse: asyncHandler(async function (req, res) {
     try {
       let query = {};
 
@@ -97,6 +97,7 @@ module.exports = {
         course.ratings.forEach(rating => {
           if (rating.postedby) {
             rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
+            rating.postedby = rating.postedby._id; // Keep postedby as the user ID string
           }
         });
       });
@@ -123,6 +124,7 @@ module.exports = {
       course.ratings.forEach(rating => {
         if (rating.postedby) {
           rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
+          rating.postedby = rating.postedby._id; // Keep postedby as the user ID string
         }
       });
 
