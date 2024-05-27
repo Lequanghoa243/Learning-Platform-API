@@ -116,7 +116,10 @@ module.exports = {
   getOneCourse: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {
-      const findCourse = await Course.findById(id).populate("ratings.postedby");
+            const findCourse = await Course.findById(id).populate({
+            path: 'ratings.postedby',
+            select: 'firstname lastname'
+        });
 
       if (!findCourse) {
         return sendError(res, '404', 'Course not found', 404, 'Not Found');
@@ -131,9 +134,11 @@ module.exports = {
     const { _id } = req.user;
     const { star, courseId, comment } = req.body;
     const course = await Course.findById(courseId);
+    const user = await User.findById(_id);
+    const userName = `${user.firstname} ${user.lastname}`;
     try {
 
-
+        
         const rateCourse = await Course.findByIdAndUpdate(
           courseId,
           {
@@ -142,6 +147,7 @@ module.exports = {
                 star: star,
                 comment: comment,
                 postedby: _id,
+                username: userName,
               },
             },
           },
