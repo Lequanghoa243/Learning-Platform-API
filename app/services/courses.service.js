@@ -78,7 +78,7 @@ module.exports = {
   } 
   }),
 
-  getAllCourse: asyncHandler(async function (req, res) {
+    getAllCourse: asyncHandler(async function (req, res) {
     try {
       let query = {};
 
