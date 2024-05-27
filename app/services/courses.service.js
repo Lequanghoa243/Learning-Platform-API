@@ -78,7 +78,7 @@ module.exports = {
   } 
   }),
 
-      getAllCourse: asyncHandler(async function (req, res) {
+     getAllCourse: asyncHandler(async function (req, res) {
     try {
       let query = {};
 
@@ -95,12 +95,14 @@ module.exports = {
       // Add the name field
       courses.forEach(course => {
         course.ratings.forEach(rating => {
-          if (rating.postedby) {
+          if (rating.postedby && rating.postedby.firstname && rating.postedby.lastname) {
             rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
-            rating.postedby = rating.postedby._id; // Keep postedby as the user ID string
+            rating.postedby = rating.postedby._id.toString(); // Keep postedby as the user ID string
           }
         });
       });
+
+      console.log(JSON.stringify(courses, null, 2)); // Debugging log
 
       res.json(courses);
     } catch (error) {
@@ -122,11 +124,13 @@ module.exports = {
 
       // Add the name field
       course.ratings.forEach(rating => {
-        if (rating.postedby) {
+        if (rating.postedby && rating.postedby.firstname && rating.postedby.lastname) {
           rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
-          rating.postedby = rating.postedby._id; // Keep postedby as the user ID string
+          rating.postedby = rating.postedby._id.toString(); // Keep postedby as the user ID string
         }
       });
+
+      console.log(JSON.stringify(course, null, 2)); // Debugging log
 
       res.json(course);
     } catch (error) {
