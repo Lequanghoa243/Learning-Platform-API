@@ -87,10 +87,48 @@ module.exports = {
         query.title = searchRegex;
       }
 
-       const getAllCourse = await Course.find(query);
-      res.json(getAllCourse);
+      const courses = await Course.find(query).populate({
+        path: 'ratings.postedby',
+        select: 'firstname lastname'
+      });
+
+      // Add the name field
+      courses.forEach(course => {
+        course.ratings.forEach(rating => {
+          if (rating.postedby) {
+            rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
+          }
+        });
+      });
+
+      res.json(courses);
     } catch (error) {
       sendError(res, '500', 'Error fetching all courses', 500, 'Internal Server Error', error);
+    }
+  }),
+
+  getOneCourse: asyncHandler(async function (req, res) {
+    const { id } = req.params;
+    try {
+      const course = await Course.findById(id).populate({
+        path: 'ratings.postedby',
+        select: 'firstname lastname'
+      });
+
+      if (!course) {
+        return sendError(res, '404', 'Course not found', 404, 'Not Found');
+      }
+
+      // Add the name field
+      course.ratings.forEach(rating => {
+        if (rating.postedby) {
+          rating.name = `${rating.postedby.firstname} ${rating.postedby.lastname}`;
+        }
+      });
+
+      res.json(course);
+    } catch (error) {
+      sendError(res, '500', 'Error fetching course by ID', 500, 'Internal Server Error', error);
     }
   }),
   getPercentage: asyncHandler(async function (req, res) {
@@ -112,21 +150,6 @@ module.exports = {
       res.json(response);
     } catch (error) {
       sendError(res, '500', 'Error fetching percentage', 500, 'Internal Server Error', error);
-    }
-  }),
-  getOneCourse: asyncHandler(async function (req, res) {
-    const { id } = req.params;
-    try {
-            const findCourse = await Course.findById(id).populate({
-            path: 'ratings.postedby',
-        });
-
-      if (!findCourse) {
-        return sendError(res, '404', 'Course not found', 404, 'Not Found');
-      }
-      res.json(findCourse);
-    } catch (error) {
-      sendError(res, '500', 'Error fetching course by ID', 500, 'Internal Server Error', error);
     }
   }),
 
