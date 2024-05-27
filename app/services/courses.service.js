@@ -87,10 +87,7 @@ module.exports = {
         query.title = searchRegex;
       }
 
-          const getAllCourse = await Course.find(query).populate({
-            path: 'ratings.postedby',
-            select: 'firstname lastname'
-        });
+       const getAllCourse = await Course.find(query);
       res.json(getAllCourse);
     } catch (error) {
       sendError(res, '500', 'Error fetching all courses', 500, 'Internal Server Error', error);
@@ -122,7 +119,6 @@ module.exports = {
     try {
             const findCourse = await Course.findById(id).populate({
             path: 'ratings.postedby',
-            select: 'firstname lastname'
         });
 
       if (!findCourse) {
@@ -138,8 +134,6 @@ module.exports = {
     const { _id } = req.user;
     const { star, courseId, comment } = req.body;
     const course = await Course.findById(courseId);
-    const user = await User.findById(_id);
-    const userName = `${user.firstname} ${user.lastname}`;
     try {
 
         
@@ -151,7 +145,6 @@ module.exports = {
                 star: star,
                 comment: comment,
                 postedby: _id,
-                username: userName,
               },
             },
           },
