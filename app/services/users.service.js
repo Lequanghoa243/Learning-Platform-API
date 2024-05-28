@@ -110,6 +110,7 @@ module.exports = {
             _id: findUser?._id,
             firstname: findUser?.firstname,
             lastname: findUser?.lastname,
+            email: findUser?.email,
             mobile: findUser?.mobile,
             token: generateToken(findUser?._id),
           });
