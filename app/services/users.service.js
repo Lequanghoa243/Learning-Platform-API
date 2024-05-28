@@ -252,13 +252,21 @@ module.exports = {
   }),
 
   getCourseList: asyncHandler(async (req, res) => {
-    const { _id } = req.user;
+const { _id } = req.user;
     try {
-      const findUser = await User.findById(_id).populate("courselist");
-      res.json(findUser);
+        const findUser = await User.findById(_id).populate("courselist");
+        
+        if (!findUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        res.json(findUser.courselist);
     } catch (error) {
-      sendError(res, '500', 'Error fetching user course list', 500, 'Internal Server Error', error);
-      throw new Error(error)
+        console.error('Error fetching user course list:', error);
+        res.status(500).json({
+            message: 'Error fetching user course list',
+            error: error.message,
+        });
     }
   }),
 };
