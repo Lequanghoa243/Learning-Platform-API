@@ -254,7 +254,7 @@ module.exports = {
   getCourseList: asyncHandler(async (req, res) => {
 const { userId } = req.body;
     try {
-        const findUser = await User.findById(_id).populate("courselist");
+        const findUser = await User.findById(userId).populate("courselist");
         
         if (!findUser) {
             return res.status(404).json({ message: 'User not found' });
