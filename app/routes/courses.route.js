@@ -378,7 +378,7 @@ module.exports = function (app) {
     *     "all": "Internal Server Error"
     * }
      */
-    app.post('/course/enrollcourse',authMiddleware,courseService.enrollCourse);
+    app.post('/course/enrollcourse',courseService.enrollCourse);
     /**
      * @api {POST} /course/enrollcourse Enroll Course
      *
