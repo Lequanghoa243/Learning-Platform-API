@@ -167,25 +167,23 @@ module.exports = {
   }),
 
   enrollCourse: asyncHandler(async (req, res) => {
-    const { _id } = req.body;
-    const { courseId } = req.body;
+    const { userId, courseId } = req.body;
     try {
-      const user = await User.findById(_id);
-      const alreadyadded = user.courselist.find((id) => id.toString() === courseId);
-      if (!alreadyadded)  {
-        let user = await User.findByIdAndUpdate(
-          _id,
-          {
-            $push: { courselist: courseId },
-          },
-          {
-            new: true,
-          }
-        );
+        const user = await User.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        const alreadyEnrolled = user.courselist.includes(courseId);
+        if (alreadyEnrolled) {
+            return res.status(400).json({ message: 'Already enrolled in this course' });
+        }
+
+        user.courselist.push(courseId);
+        await user.save();
         res.json(user);
-      }
     } catch (error) {
-      sendError(res, '500', 'Error enrolling in the course', 500, 'Internal Server Error', error);
+        sendError(res, '500', 'Error enrolling in the course', 500, 'Internal Server Error', error);
     }
   }),
 
