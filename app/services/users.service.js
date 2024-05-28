@@ -252,7 +252,7 @@ module.exports = {
   }),
 
   getCourseList: asyncHandler(async (req, res) => {
-const { _id } = req.user;
+const { userId } = req.body;
     try {
         const findUser = await User.findById(_id).populate("courselist");
         
