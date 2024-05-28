@@ -74,7 +74,7 @@ module.exports = function (app) {
      */
     
   
-    app.get("/user/wishlist", authMiddleware, userService.getWishlist);
+    app.get("/user/wishlist", userService.getWishlist);
     app.get("/user/all-user", authMiddleware, isAdmin, userService.getAllUser);
     /**
      * @api {GET} /user/all-user Get All Users
