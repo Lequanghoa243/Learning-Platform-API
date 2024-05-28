@@ -65,12 +65,21 @@ module.exports = {
     }
   }),
  getWishlist: asyncHandler(async (req, res) => {
-    const { _id } = req.user;
+    const { userId } = req.body;
     try {
-      const findUser = await User.findById(_id).populate("wishlist");
-      res.json(findUser);
+        const findUser = await User.findById(userId).populate("wishlist");
+        
+        if (!findUser) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+        
+        res.json(findUser.wishlist);
     } catch (error) {
-      throw new Error(error);
+        console.error('Error fetching user course list:', error);
+        res.status(500).json({
+            message: 'Error fetching user course list',
+            error: error.message,
+        });
     }
   }),
   handleRefreshToken: asyncHandler(async function (req, res) {
