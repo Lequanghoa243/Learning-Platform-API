@@ -136,7 +136,7 @@ module.exports = function (app) {
      * 
      */
     
-    app.post('/user/course-list',authMiddleware,userService.getCourseList);
+    app.post('/user/course-list',userService.getCourseList);
     /**
      * @api {GET} /user/course-list Get Course List
      * @apiVersion 0.0.0
