@@ -1,5 +1,6 @@
 const Lesson = require('../models/lesson.model');
 const Course = require('../models/courses.model');
+const Progress = require('../models/progress.model');
 const asyncHandler = require('express-async-handler');
 const { sendError } = require('../utils/restware');
 
