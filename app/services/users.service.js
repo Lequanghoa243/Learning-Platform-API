@@ -127,6 +127,7 @@ module.exports = {
           sendError(res, '404', 'Account not Found', 404, 'Account not Found', error); 
       }
     } catch (error) {
+      console.error(error);
       sendError(res, '500', 'Error logging in', 500, 'Internal Server Error', error);
     }
   }),
