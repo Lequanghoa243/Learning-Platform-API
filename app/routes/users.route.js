@@ -3,7 +3,7 @@ const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 
 module.exports = function (app) {
     app.post("/user/get-user",userService.getaUser)
-    app.get("/user",authMiddleware, isAdmin,userService.getAllUser);
+    app.get("/user",userService.getAllUser);
     app.post("/user/admin-login", userService.loginAdmin);
     /**
      * @api {POST} /user/admin-login Admin Log in
