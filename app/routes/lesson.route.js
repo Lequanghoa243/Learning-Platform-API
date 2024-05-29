@@ -4,6 +4,7 @@ const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 module.exports = function (app) {
     app.get('/lesson', lessonService.getAllLesson);
     app.post('/lesson/create', authMiddleware, isAdmin,lessonService.createLesson);
+    app.post('/lesson/:id',lessonService.getOneLesson);
      /**
      * @api {POST} /Lesson/create Create One Lesson
      * @apiVersion 0.0.0
@@ -170,7 +171,7 @@ app.delete("/lesson/:id", authMiddleware, isAdmin, lessonService.deleteLesson);
  * }
  */
 
-    app.get('/lesson/:id',authMiddleware ,lessonService.getOneLesson);
+
     /**
      * @api {GET} /lesson/:id Get One lesson
      * @apiVersion 0.0.0

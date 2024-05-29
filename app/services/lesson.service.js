@@ -74,7 +74,7 @@ try {
 }),
 
 getOneLesson: asyncHandler(async function (req, res) {
-  const { id } = req.body;
+  const { id } = req.params;
   const { _id } = req.body;
   try {
     const findLesson = await Lesson.findById(id);
