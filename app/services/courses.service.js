@@ -97,7 +97,7 @@ module.exports = {
   getOneCourse: asyncHandler(async function (req, res) {
     const { id } = req.params;
     try {
-    const findCourse = await Course.findById(id).populate("ratings.postedby");
+    const findCourse = await Course.findById(id);
 
       res.json(findCourse);
     } catch (error) {
