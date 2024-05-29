@@ -20,7 +20,7 @@ module.exports = {
     }
   }),
   addToWishlist : asyncHandler(async (req, res) => {
-    const { _id } = req.user;
+    const { _id } = req.body;
     const { courseId } = req.body;
     try {
       const user = await User.findById(_id);

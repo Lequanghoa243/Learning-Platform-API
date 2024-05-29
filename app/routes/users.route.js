@@ -73,7 +73,6 @@ module.exports = function (app) {
      * 
      */
     
-  
     app.post("/user/wishlist", userService.getWishlist);
     app.get("/user/all-user", authMiddleware, isAdmin, userService.getAllUser);
     /**
