@@ -127,7 +127,7 @@ module.exports = {
   }),
 
   rating: asyncHandler(async function (req, res) {
-    const { _id } = req.user;
+    const { _id } = req.body;
     const { star, courseId, comment } = req.body;
     const course = await Course.findById(courseId);
     try {
