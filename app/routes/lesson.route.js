@@ -4,7 +4,7 @@ const {authMiddleware, isAdmin} = require('../middleware/authmiddleware')
 module.exports = function (app) {
     app.get('/lesson', lessonService.getAllLesson);
     app.post('/lesson/create', authMiddleware, isAdmin,lessonService.createLesson);
-    app.post('/lesson/:id',lessonService.getOneLesson);
+    app.post('/lesson/getonelesson',lessonService.getOneLesson);
      /**
      * @api {POST} /Lesson/create Create One Lesson
      * @apiVersion 0.0.0
