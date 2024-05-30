@@ -107,7 +107,7 @@ module.exports = {
   getPercentage: asyncHandler(async function (req, res) {
     try {
       const { id } = req.body;
-      const userId = req.body; 
+      const _id = req.body; 
       const findCourse = await Course.findById(id).populate("ratings.postedby");
       if (!findCourse) {
         return sendError(res, '404', 'Course not found', 404, 'Not Found');
